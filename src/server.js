@@ -1,7 +1,7 @@
 import express from "express";
-import configViewEngine from "./configs/viewEngine";
+import configViewEngine from "./config/viewEngine";
 import initWebRoutes from "./routes/web";
-// import connectDB from "./configs/connectDB";
+// import connectDB from "./config/connectDB";
 import bodyParse from "body-parser";
 
 require("dotenv").config();
