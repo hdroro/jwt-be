@@ -1,4 +1,5 @@
 const mysql = require("mysql2");
+import db from "../models/index";
 
 const connection = mysql.createConnection({
   host: "127.0.0.1",
@@ -16,24 +17,23 @@ const hashUserPassword = (password) => {
   return bcypt.hashSync(password, salt);
 };
 
-const createNewUser = (email, password, username) => {
+const createNewUser = async (email, password, username) => {
   let hashPassword = hashUserPassword(password);
 
-  connection.query(
-    "INSERT INTO users (email, password, username) VALUES (?, ?, ?)",
-    [email, hashPassword, username],
-    (error, results, fields) => {
-      if (error) {
-        console.error("Error creating new user:", error);
-      }
-      console.log("User created successfully");
-    }
-  );
+  try {
+    await db.User.create({
+      username: username,
+      email: email,
+      password: hashPassword,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const getUserList = () => {
   return new Promise((resolve, reject) => {
-    connection.query("SELECT * FROM users", (error, results, fields) => {
+    connection.query("SELECT * FROM user", (error, results, fields) => {
       if (error) {
         console.error("Error fetching user list:", error);
         reject(error);
@@ -47,7 +47,7 @@ const getUserList = () => {
 const getUserById = (id) => {
   return new Promise((resolve, reject) => {
     connection.query(
-      "SELECT * FROM users where id = ?",
+      "SELECT * FROM user where id = ?",
       [id],
       (error, results, fields) => {
         if (error) {
@@ -63,7 +63,7 @@ const getUserById = (id) => {
 
 const deleteUser = (id) => {
   connection.query(
-    "DELETE FROM users where id = ?",
+    "DELETE FROM user where id = ?",
     [id],
     (error, results, fields) => {
       if (error) {
@@ -76,7 +76,7 @@ const deleteUser = (id) => {
 
 const editNewUser = (email, username, id) => {
   connection.query(
-    "UPDATE users SET email = ?, username = ? where id = ?",
+    "UPDATE user SET email = ?, username = ? where id = ?",
     [email, username, id],
     (error, results, fields) => {
       if (error) {
