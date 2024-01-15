@@ -32,13 +32,64 @@ const createNewUser = (email, password, username) => {
 };
 
 const getUserList = () => {
-  let users = [];
-  connection.query("Select * from users", (error, results, fields) => {
-    if (error) {
-      console.error("Error creating new user:", error);
-    }
-    console.log(`"User created successfully"`);
+  return new Promise((resolve, reject) => {
+    connection.query("SELECT * FROM users", (error, results, fields) => {
+      if (error) {
+        console.error("Error fetching user list:", error);
+        reject(error);
+      } else {
+        resolve(results);
+      }
+    });
   });
 };
 
-module.exports = { createNewUser, getUserList };
+const getUserById = (id) => {
+  return new Promise((resolve, reject) => {
+    connection.query(
+      "SELECT * FROM users where id = ?",
+      [id],
+      (error, results, fields) => {
+        if (error) {
+          console.error("Error fetching user list:", error);
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      }
+    );
+  });
+};
+
+const deleteUser = (id) => {
+  connection.query(
+    "DELETE FROM users where id = ?",
+    [id],
+    (error, results, fields) => {
+      if (error) {
+        console.error("Error creating new user:", error);
+      }
+      console.log("User deleted successfully");
+    }
+  );
+};
+
+const editNewUser = (email, username, id) => {
+  connection.query(
+    "UPDATE users SET email = ?, username = ? where id = ?",
+    [email, username, id],
+    (error, results, fields) => {
+      if (error) {
+        console.error("Error creating new user:", error);
+      }
+    }
+  );
+};
+
+module.exports = {
+  createNewUser,
+  getUserById,
+  getUserList,
+  deleteUser,
+  editNewUser,
+};
