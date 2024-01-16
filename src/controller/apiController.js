@@ -10,7 +10,13 @@ const handleRegister = (req, res) => {
   console.log(req.body);
 };
 
+const handleLogin = (req, res) => {
+  console.log(">>> call login");
+  console.log(req.body);
+};
+
 module.exports = {
   testApi,
   handleRegister,
+  handleLogin,
 };
