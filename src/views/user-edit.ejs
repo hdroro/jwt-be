@@ -14,7 +14,7 @@
     <div class="container">
       <div class="row">
         <div class="user-info-container">
-          <form method="post" action="/users/edit-user/<%=userDetail[0].id%>">
+          <form method="post" action="/users/edit-user/<%=userDetail.id%>">
             <div class="mt-3">
               <h3>Edit a new user</h3>
             </div>
@@ -26,7 +26,7 @@
                 id="email"
                 name="email"
                 aria-describedby="emailHelp"
-                value="<%= userDetail[0].email %>"
+                value="<%= userDetail.email %>"
               />
             </div>
             <div class="col-6"></div>
@@ -37,7 +37,7 @@
                 class="form-control"
                 id="username"
                 name="username"
-                value="<%= userDetail[0].username %>"
+                value="<%= userDetail.username %>"
               />
               <button type="submit" class="btn btn-primary mt-3">Submit</button>
             </div>
