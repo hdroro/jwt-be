@@ -1,12 +1,4 @@
-const mysql = require("mysql2");
 import db from "../models/index";
-
-const connection = mysql.createConnection({
-  host: "127.0.0.1",
-  user: "root",
-  password: "sa123",
-  database: "jwt",
-});
 
 import bcypt from "bcryptjs";
 
