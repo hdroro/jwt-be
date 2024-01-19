@@ -1,11 +1,6 @@
 import db from "../models/index";
 
 const getAllUsers = async () => {
-  let data = {
-    EM: "",
-    EX: "",
-    DT: "",
-  };
   try {
     let users = await db.User.findAll({
       attributes: ["id", "username", "email", "phone", "sex"],
@@ -28,6 +23,35 @@ const getAllUsers = async () => {
         DT: [],
       };
     }
+  } catch (error) {
+    console.log(error);
+    return {
+      EM: "something wrongs with service",
+      EC: 1,
+      DT: [],
+    };
+  }
+};
+
+const getUserWithPagination = async (page, limit) => {
+  try {
+    let offset = (page - 1) * limit;
+
+    const { count, rows } = await db.User.findAndCountAll({
+      offset: offset,
+      limit: limit,
+    });
+
+    let data = {
+      totalRows: count,
+      totalPages: Math.ceil(count / limit),
+      users: rows,
+    };
+    return {
+      EM: "OK",
+      EC: 0,
+      DT: data,
+    };
   } catch (error) {
     console.log(error);
     return {
@@ -75,4 +99,10 @@ const deleteUser = async (id) => {
   }
 };
 
-module.exports = { getAllUsers, createNewUser, updateUser, deleteUser };
+module.exports = {
+  getAllUsers,
+  getUserWithPagination,
+  createNewUser,
+  updateUser,
+  deleteUser,
+};
