@@ -1,3 +1,4 @@
+require("dotenv").config();
 import express from "express";
 import configViewEngine from "./config/viewEngine";
 import initWebRoutes from "./routes/web";
@@ -5,7 +6,7 @@ import initApiRoutes from "./routes/api";
 import configCors from "./config/cors";
 // import connectDB from "./config/connectDB";
 import bodyParse from "body-parser";
-require("dotenv").config();
+import cookieParser from "cookie-parser";
 
 const app = express();
 
@@ -19,11 +20,16 @@ configCors(app);
 app.use(bodyParse.json());
 app.use(bodyParse.urlencoded({ extended: true }));
 
-// console.log(decoded);
+//config cookieParser
+app.use(cookieParser());
 
 initWebRoutes(app);
 initApiRoutes(app);
 // connectDB.connect();
+
+app.use((req, res) => {
+  return res.send("404 not found");
+});
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
