@@ -1,6 +1,9 @@
 import db from "../models/index";
 import bcypt from "bcryptjs";
 import { Op } from "sequelize";
+import { getGroupWithRoles } from "./JWTService";
+import { createJWT } from "../middleware/JWTActions";
+require("dotenv").config();
 
 const salt = bcypt.genSaltSync(10);
 
@@ -50,6 +53,7 @@ const registerNewUser = async (rawUserData) => {
       username: rawUserData.username,
       phone: rawUserData.phone,
       password: hashPassword,
+      groupId: 4,
     });
 
     return {
@@ -79,10 +83,23 @@ const handleUserLogin = async (rawData) => {
     if (user) {
       let isCorrectPassword = checkPassword(rawData.password, user.password);
       if (isCorrectPassword) {
+        //let token
+
+        //test roles:
+        let groupWithRoles = await getGroupWithRoles(user);
+        let payload = {
+          email: user.email,
+          groupWithRoles,
+          expiresIn: process.env.JWT_EXPIRES_IN,
+        };
+        let token = createJWT(payload);
         return {
           EM: "OK",
           EC: 0,
-          DT: "",
+          DT: {
+            access_token: token,
+            data: groupWithRoles,
+          },
         };
       }
     }
