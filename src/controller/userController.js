@@ -29,6 +29,39 @@ const readFunc = async (req, res) => {
 
 const createFunc = async (req, res) => {
   try {
+    let data;
+    let { email, phone, username, password, address, gender, group } = req.body;
+    if (!email || !phone || !password) {
+      return res.status(200).json({
+        EM: "Missing required parameters", //error message
+        EC: "-1", // error code
+        DT: "", //date
+      });
+    }
+
+    if (password && password.length < 4) {
+      return res.status(200).json({
+        EM: "Your password must have more than 3 letters", //error message
+        EC: "-1", // error code
+        DT: "", //date
+      });
+    }
+
+    data = await userApiService.createNewUser(
+      email,
+      password,
+      username,
+      phone,
+      gender,
+      address,
+      group
+    );
+
+    return res.status(200).json({
+      EM: data.EM, //error message
+      EC: data.EC, // error code
+      DT: data.DT, //data
+    });
   } catch (error) {
     console.log(error);
     return res.status(200).json({
@@ -41,6 +74,22 @@ const createFunc = async (req, res) => {
 
 const updateFunc = async (req, res) => {
   try {
+    let data;
+    let { id, username, address, gender, group } = req.body;
+
+    data = await userApiService.updateUser(
+      id,
+      username,
+      gender,
+      address,
+      group
+    );
+
+    return res.status(200).json({
+      EM: data.EM, //error message
+      EC: data.EC, // error code
+      DT: data.DT, //data
+    });
   } catch (error) {
     console.log(error);
     return res.status(200).json({
@@ -50,6 +99,7 @@ const updateFunc = async (req, res) => {
     });
   }
 };
+
 const deleteFunc = async (req, res) => {
   try {
     let data;
