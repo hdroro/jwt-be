@@ -36,8 +36,6 @@ const getAllUsers = async () => {
       nest: true,
     });
     if (users) {
-      console.log(users);
-      //   let data = users.get({ plain: true });
       return {
         EM: "get data success",
         EC: 0,
@@ -104,7 +102,6 @@ const createNewUser = async (
   group
 ) => {
   try {
-    console.log("email", email);
     let isEmailExist = await checkEmailExist(email);
     if (isEmailExist) {
       return {
