@@ -7,14 +7,14 @@ const readFunc = async (req, res) => {
       return res.status(200).json({
         EM: data.EM, //error message
         EC: data.EC, // error code
-        DT: data.DT, //date
+        DT: data.DT, //data
       });
     } else {
       let data = await userApiService.getAllUsers();
       return res.status(200).json({
         EM: data.EM, //error message
         EC: data.EC, // error code
-        DT: data.DT, //date
+        DT: data.DT, //data
       });
     }
   } catch (error) {
@@ -22,7 +22,7 @@ const readFunc = async (req, res) => {
     return res.status(200).json({
       EM: "error from server", //error message
       EC: "-1", // error code
-      DT: "", //date
+      DT: "", //data
     });
   }
 };
@@ -35,7 +35,7 @@ const createFunc = async (req, res) => {
       return res.status(200).json({
         EM: "Missing required parameters", //error message
         EC: "-1", // error code
-        DT: "", //date
+        DT: "", //data
       });
     }
 
@@ -43,7 +43,7 @@ const createFunc = async (req, res) => {
       return res.status(200).json({
         EM: "Your password must have more than 3 letters", //error message
         EC: "-1", // error code
-        DT: "", //date
+        DT: "", //data
       });
     }
 
@@ -67,7 +67,7 @@ const createFunc = async (req, res) => {
     return res.status(200).json({
       EM: "error from server", //error message
       EC: "-1", // error code
-      DT: "", //date
+      DT: "", //data
     });
   }
 };
@@ -95,7 +95,7 @@ const updateFunc = async (req, res) => {
     return res.status(200).json({
       EM: "error from server", //error message
       EC: "-1", // error code
-      DT: "", //date
+      DT: "", //data
     });
   }
 };
@@ -114,7 +114,7 @@ const deleteFunc = async (req, res) => {
     return res.status(200).json({
       EM: "error from server", //error message
       EC: "-1", // error code
-      DT: "", //date
+      DT: "", //data
     });
   }
 };

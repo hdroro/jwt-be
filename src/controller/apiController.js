@@ -14,7 +14,7 @@ const handleRegister = async (req, res) => {
       return res.status(200).json({
         EM: "Missing required parameters", //error message
         EC: "-1", // error code
-        DT: "", //date
+        DT: "", //data
       });
     }
 
@@ -22,7 +22,7 @@ const handleRegister = async (req, res) => {
       return res.status(200).json({
         EM: "Your password must have more than 3 letters", //error message
         EC: "-1", // error code
-        DT: "", //date
+        DT: "", //data
       });
     }
 
@@ -31,13 +31,13 @@ const handleRegister = async (req, res) => {
     return res.status(200).json({
       EM: data.EM, //error message
       EC: data.EC, // error code
-      DT: "", //date
+      DT: "", //data
     });
   } catch (error) {
     return res.status(200).json({
       EM: "error from server", //error message
       EC: "-1", // error code
-      DT: "", //date
+      DT: "", //data
     });
   }
 };
@@ -54,14 +54,32 @@ const handleLogin = async (req, res) => {
     return res.status(200).json({
       EM: data.EM, //error message
       EC: data.EC, // error code
-      DT: data.DT, //date
+      DT: data.DT, //data
     });
   } catch (error) {
     console.log(error);
     return res.status(200).json({
       EM: "error from server", //error message
       EC: "-1", // error code
-      DT: "", //date
+      DT: "", //data
+    });
+  }
+};
+
+const handleLogout = async (req, res) => {
+  try {
+    res.clearCookie("jwt");
+    return res.status(200).json({
+      EM: "ok", //error message
+      EC: 0, // error code
+      DT: "", //data
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(200).json({
+      EM: "error from server", //error message
+      EC: "-1", // error code
+      DT: "", //data
     });
   }
 };
@@ -70,4 +88,5 @@ module.exports = {
   testApi,
   handleRegister,
   handleLogin,
+  handleLogout,
 };
