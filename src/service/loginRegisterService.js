@@ -93,12 +93,15 @@ const handleUserLogin = async (rawData) => {
           expiresIn: process.env.JWT_EXPIRES_IN,
         };
         let token = createJWT(payload);
+        console.log("payload", payload);
         return {
           EM: "OK",
           EC: 0,
           DT: {
             access_token: token,
-            data: groupWithRoles,
+            groupWithRoles,
+            email: user.email,
+            username: user.username,
           },
         };
       }
