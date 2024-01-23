@@ -157,10 +157,81 @@ const deleteRole = async (id) => {
   }
 };
 
+const getRolesByGroup = async (groupId) => {
+  try {
+    if (!groupId) {
+      return {
+        EM: "Not found anu roles",
+        EC: 1,
+        DT: [],
+      };
+    }
+
+    let roles = await db.Group.findAll({
+      attributes: ["id", "name", "description"],
+      where: {
+        id: groupId,
+      },
+      include: {
+        model: db.Role,
+        attributes: ["id", "url", "description"],
+        through: { attributes: [] },
+      },
+      raw: true,
+      nest: true,
+    });
+
+    if (roles) {
+      return {
+        EM: "Get roles by group succeeds...",
+        EC: 0,
+        DT: roles,
+      };
+    } else {
+      return {
+        EM: "something wrongs with service",
+        EC: 1,
+        DT: [],
+      };
+    }
+  } catch (error) {
+    console.log(error);
+    return {
+      EM: "something wrongs with service",
+      EC: 1,
+      DT: [],
+    };
+  }
+};
+
+const assignRoleToGroup = async (data) => {
+  try {
+    await db.Group_Role.destroy({
+      where: {
+        groupId: +data.groupId,
+      },
+    });
+    await db.Group_Role.bulkCreate(data.groupRoles);
+    return {
+      EM: "Assign Role to Group succeeds",
+      EC: 0,
+      DT: [],
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      EM: "something wrongs with service",
+      EC: 1,
+      DT: [],
+    };
+  }
+};
 module.exports = {
   getAllRoles,
   getRoleWithPagination,
   createNewRoles,
   updateRole,
   deleteRole,
+  getRolesByGroup,
+  assignRoleToGroup,
 };
